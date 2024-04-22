@@ -4,10 +4,21 @@
  * 
  * Use this template to get started creating a simple 2D game for the web using P5.js. 
  */
+var gameState = "splash";
+var player1; 
+var testBox;
+var dropTimer;
+var presents = new Array(0);
 
 function setup() {
 
   createCanvas(600, 400);
+
+  player1 = new Player(width / 2, height - 50);
+
+  dropTimer = new Timer(1000);
+  
+  textBox = new Box(width / 2, height / 3);
 
 }
 
@@ -18,16 +29,26 @@ function draw() {
   //play(); // call the play screen function (below)
   //gameOver(); // call the gameOver screen function (below)
 
+  if(gameState == "splash") {
+    splash();
+  } else if(gameState == "play") {
+    play();
+  }
+
 }
 
 function splash() {
   // this is what you would see when the game starts
+  
   background(200);
   textAlign(CENTER);
   textSize(16);
   text("Let's Play a Game!", width / 2, height / 2);
   textSize(12);
   text("(click the mouse to continue)", width / 2, height / 2 + 30);
+  
+  testBox.display();
+  testBox.spin();
 }
 
 function play() {
@@ -37,7 +58,28 @@ function play() {
   textAlign(CENTER);
   textSize(16);
   text("This is where the Game happens", width / 2, height / 2);
+  player1.display();
 
+  if(dropTimer.isFinished()) {
+    let p = new Box(random(width), -40);
+    presents.push(p);
+    dropTimer.start();
+  }
+
+  for(let i = 0; i < presents.length; i++) {
+    presents[i].display();
+    presents[i].move();
+    presents[i].spin();
+
+    if(presents[i].y > height) {
+      presents.splice(i, 1);
+    }
+  
+    let d = dist(presents[i].x, presents[i].y, player1.x, player1.y);
+    if(d < 50) {
+      presents.splice(i, 1);
+    }
+  }
 }
 
 function gameOver() {
@@ -50,7 +92,16 @@ function gameOver() {
 }
 
 function mousePressed() {
+  if(gameState == "splash") {
+    gameState == "play";
+    gameTimer.start();
+    dropTimer.start();
+    
+  
+  
+  
 
   console.log("click!");
 
+  }
 }
