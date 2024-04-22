@@ -93,7 +93,7 @@ function play() {
       presents.splice(i, 1);
     }
   }
-}
+  }
 
 function gameOver() {
   // this is what you see when the game ends
@@ -107,6 +107,10 @@ function gameOver() {
 function mousePressed() {
   if(gameState == "splash") {
     gameState == "play";
+    gameTimer.start();
+    dropTimer.start();
+    presents = new Array(0);
+    player1 = new Player (width/2, height * 4/5);
   }
   else if(gameState == "play") {
     gameState == "gameOver";
@@ -121,9 +125,7 @@ function mousePressed() {
   
   
 
-  console.log("click!");
+  console.log(gameState);
 
 }
-}
-
   
