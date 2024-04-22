@@ -28,6 +28,19 @@ function draw() {
   //splash(); // call the splash screen function (below)
   //play(); // call the play screen function (below)
   //gameOver(); // call the gameOver screen function (below)
+  switch (gameState) {
+    case "splash" :
+      splash();
+      break;
+    case "play" :
+      play();
+      break;
+    case "gameOver" :
+      gameOver();
+      break;
+    default :
+      console.log("no match found - check your mousePressed() function!");
+  }
 
   if(gameState == "splash") {
     splash();
@@ -94,6 +107,13 @@ function gameOver() {
 function mousePressed() {
   if(gameState == "splash") {
     gameState == "play";
+  }
+  else if(gameState == "play") {
+    gameState == "gameOver";
+  }
+  else if(gameState == "gameOver") {
+    gameState = "splash"
+  }
     gameTimer.start();
     dropTimer.start();
     
@@ -103,7 +123,7 @@ function mousePressed() {
 
   console.log("click!");
 
-  }
+}
 }
 
   
