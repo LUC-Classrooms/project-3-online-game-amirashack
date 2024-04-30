@@ -14,7 +14,7 @@ function setup() {
 
   createCanvas(600, 400);
 
-  player1 = new Player(width / 2, height - 50);
+  player1 = new Player(width / 2, height * 4/5);
 
   dropTimer = new Timer(1000);
   
@@ -129,3 +129,18 @@ function mousePressed() {
 
 }
   
+
+function keyPressed() {
+  switch(keyCode) {
+    case UP_ARROW :
+      player1.y -= 30
+      player1.angle = 0;
+      if(player1.y < 0) player1.y = height; //wrap to bottom
+    break;
+    case DOWN_ARROW :
+      player1.y += 30
+      player1.angle = PI ;
+      if(player1.y > height) player1.y = 0; //wrap to top
+      break;
+  }
+}
