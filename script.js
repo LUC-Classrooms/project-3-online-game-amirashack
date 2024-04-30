@@ -6,18 +6,22 @@
  */
 var gameState = "splash";
 var player1; 
-var testBox;
 var gameTimer;
+var testBox; // a box to preview on the splash screen
+var dropTimer; // regulate box drops
+var presents = new Array(0); // an empty array called "presents"
 
 function setup() {
 
   createCanvas(600, 400);
 
-  player1 = new Player(width / 2, height * 4/5);
+  player1 = new Player(width/2, height * 4/5);
 
   gameTimer = new Timer(5000); // 5 second timer
+
+  dropTimer = new Timer(1000); 
   
-  textBox = new Box(width / 2, height / 3);
+  textBox = new Box(width/2, height/3);
 
 }
 
@@ -27,19 +31,19 @@ function draw() {
   //splash(); // call the splash screen function (below)
   //play(); // call the play screen function (below)
   //gameOver(); // call the gameOver screen function (below)
-  switch (gameState) {
-    case "splash" :
-      splash();
-      break;
-    case "play" :
-      play();
-      break;
-    case "gameOver" :
-      gameOver();
-      break;
-    default :
-      console.log("no match found - check your mousePressed() function!");
-  }
+switch(gameState) {
+  case "splash":
+    splash();
+    break;
+  case "play":
+    play();
+    break;
+  case "gameOver":
+    gameOver();
+    break;
+  default:
+    console.log("no match found - check your mousePressed() function!");
+}
 
   if(gameState == "splash") {
     splash();
@@ -61,7 +65,6 @@ function splash() {
   
   testBox.display();
   testBox.spin();
-}
 
 function play() {
   // this is what you see when the game is running 
@@ -72,13 +75,41 @@ function play() {
   text("This is where the Game happens", width / 2, height / 2);
   player1.display();
 
+  textAlign(LEFT);
+  text("elasped time: " + gameTimer.elaspedTime, 40, 100); //show elasped time
+
 
   if(gameTimer.isFinished()) {
    gameState = "gameOver"
   }
 
-  textAlign(LEFT);
-  text("elasped time: " + gameTimer.elaspedTime, 40, 100); //show elasped time
+  if(dropTimer.isFinished()) {
+    let p = new Box(random(width), -40); // new box, anywhere across the width of the canvas, but 40px above the canvas
+    presents.push(p); // add object 'p' to the 'presents' Array
+    dropTimer.start(); // restart timer for next drop
+  }
+
+  for(let i = 0; i < presents.length; i++) {
+    presents[i].display(); // draw it on the canvas
+    presents[i].move(); // make it drop
+    presents[i].spin() // make it rotate
+
+    if(presents[i].y > height){
+      presents.splice(i, 1);
+    }
+    let d = dist(presents[i].y, player1.x, player1.y);
+    if(d < 50){
+      presents.splice(i, 1);
+    }
+
+
+  }
+
+  
+}
+
+  
+
 
 }
 
@@ -95,30 +126,23 @@ function mousePressed() {
   if(gameState == "splash") {
     gameState == "play";
     gameTimer.start();
-    gameTimer.start();
     dropTimer.start();
-    presents = new Array(0);
-    player1 = new Player (width/2, height * 4/5);
-    gameTimer.start(); 
-    dropTimer.start();
-    presents = new Array(0);
-    player1 = new Player (width/2, height * 4/5);
   }
   else if(gameState == "play") {
     gameState == "gameOver";
   }
   else if(gameState == "gameOver") {
-    gameState = "splash"
+    gameState == "splash";
   }
-    gameTimer.start();
+  
+    
     
     
   
   
  
   
-  console.log(gameState);
-
+console.log(gameState)
 }
   
 
