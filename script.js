@@ -17,7 +17,7 @@ function setup() {
   createCanvas(600, 400);
 
   player1 = new Player(width/2, height * 4/5);
-  gameTimer = new Timer(5000); // 5 second timer
+  gameTimer = new Timer(10000); // 10 second timer
   dropTimer = new Timer(1000); 
   testBox = new Box(width/2, height/3);
 
@@ -55,6 +55,7 @@ function splash() {
   background(200);
   textAlign(CENTER);
   textSize(16);
+  fill(0);
   text("Let's Play a Game!", width / 2, height / 2);
   textSize(12);
   text("(click the mouse to continue)", width / 2, height / 2 + 30);
@@ -65,15 +66,13 @@ function splash() {
 
 function play() {
   // this is what you see when the game is running 
-  background(0, 200, 0);
-  fill(0, 0, 200)
-  textAlign(CENTER);
-  textSize(16);
-  text("This is where the Game happens", width / 2, height / 2);
+  background(250, 190, 220);
+  
   player1.display();
 
   textAlign(LEFT);
   text("Elasped time: " + gameTimer.elaspedTime, 20, 20);
+  text("Score: " + score, 20, 40);
 
 
 
@@ -99,15 +98,13 @@ function play() {
       presents.splice(i, 1);
       score--; //take away 1 point
     }
-    let d = dist(presents[i].y, player1.x, player1.y);
+    let d = dist(presents[i].x, presents[i].y, player1.x, player1.y);
     if(d < 50){
       presents.splice(i, 1);
       score ++; // add 1 point
     }
   }
-  textAlign(LEFT);
-  text("Elasped time: " + gameTimer.elaspedTime, 20, 20);
-  text("Score: " + score, 20, 40);
+  
 }
 
 
@@ -148,6 +145,15 @@ console.log(gameState)
 
 function keyPressed() {
   switch(keyCode) {
+    case LEFT_ARROW:
+      player1.x -= 30;
+      if(player1.x < 0) player1.x = width;
+    break;
+    case RIGHT_ARROW:
+      player1.x += 30;
+      if(player1.x < 0) player1.x = 0;
+    break;
+
     case UP_ARROW :
       player1.y -= 30
       player1.angle = 0;

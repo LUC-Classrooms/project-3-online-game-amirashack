@@ -24,14 +24,21 @@ function Box(_x, _y){
     rotate(this.angle);
 
     rectMode(CENTER);
-    fill(this.boxColor);
-    rect(0, 0, 40); // 40px square
+    fill(255, 200, 0);
+    for(let i = 0; i < 6; i++) {
+      ellipse(0, 0, 20, 40);
+      rotate(PI / 3);
+    }
+    
+    
 
-    fill(this.ribbonColor);
-    rect(0, 0, 40, 10); // horizontal ribbon
-    rect(0, 0, 10, 40); // vertical ribbon
+    fill(255, 0, 0);
+    ellipse(0, 0, 20);
 
     pop();
+    
+
+    
 
   }
 
