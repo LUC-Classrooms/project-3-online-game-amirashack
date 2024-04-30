@@ -7,8 +7,7 @@
 var gameState = "splash";
 var player1; 
 var testBox;
-var dropTimer;
-var presents = new Array(0);
+var gameTimer;
 
 function setup() {
 
@@ -16,7 +15,7 @@ function setup() {
 
   player1 = new Player(width / 2, height * 4/5);
 
-  dropTimer = new Timer(1000);
+  gameTimer = new Timer(5000); // 5 second timer
   
   textBox = new Box(width / 2, height / 3);
 
@@ -73,27 +72,15 @@ function play() {
   text("This is where the Game happens", width / 2, height / 2);
   player1.display();
 
-  if(dropTimer.isFinished()) {
-    let p = new Box(random(width), -40);
-    presents.push(p);
-    dropTimer.start();
+
+  if(gameTimer.isFinished()) {
+   gameState = "gameOver"
   }
 
-  for(let i = 0; i < presents.length; i++) {
-    presents[i].display();
-    presents[i].move();
-    presents[i].spin();
+  textAlign(LEFT);
+  text("elasped time: " + gameTimer.elaspedTime, 40, 100); //show elasped time
 
-    if(presents[i].y > height) {
-      presents.splice(i, 1);
-    }
-  
-    let d = dist(presents[i].x, presents[i].y, player1.x, player1.y);
-    if(d < 50) {
-      presents.splice(i, 1);
-    }
-  }
-  }
+}
 
 function gameOver() {
   // this is what you see when the game ends
@@ -108,6 +95,11 @@ function mousePressed() {
   if(gameState == "splash") {
     gameState == "play";
     gameTimer.start();
+    gameTimer.start();
+    dropTimer.start();
+    presents = new Array(0);
+    player1 = new Player (width/2, height * 4/5);
+    gameTimer.start(); 
     dropTimer.start();
     presents = new Array(0);
     player1 = new Player (width/2, height * 4/5);
@@ -119,12 +111,12 @@ function mousePressed() {
     gameState = "splash"
   }
     gameTimer.start();
-    dropTimer.start();
+    
     
   
   
+ 
   
-
   console.log(gameState);
 
 }
