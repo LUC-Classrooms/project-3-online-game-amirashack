@@ -10,18 +10,16 @@ var gameTimer;
 var testBox; // a box to preview on the splash screen
 var dropTimer; // regulate box drops
 var presents = new Array(0); // an empty array called "presents"
+var score = 0; //keep track of the points
 
 function setup() {
 
   createCanvas(600, 400);
 
   player1 = new Player(width/2, height * 4/5);
-
   gameTimer = new Timer(5000); // 5 second timer
-
   dropTimer = new Timer(1000); 
-  
-  textBox = new Box(width/2, height/3);
+  testBox = new Box(width/2, height/3);
 
 }
 
@@ -31,25 +29,23 @@ function draw() {
   //splash(); // call the splash screen function (below)
   //play(); // call the play screen function (below)
   //gameOver(); // call the gameOver screen function (below)
-switch(gameState) {
-  case "splash":
-    splash();
-    break;
-  case "play":
-    play();
-    break;
-  case "gameOver":
-    gameOver();
-    break;
-  default:
-    console.log("no match found - check your mousePressed() function!");
+  switch(gameState) {
+    case "splash":
+      splash();
+      break;
+    case "play":
+      play();
+      break;
+    case "gameOver":
+      gameOver();
+      break;
+    default:
+      console.log("no match found - check your mousePressed() function!");
+
 }
 
-  if(gameState == "splash") {
-    splash();
-  } else if(gameState == "play") {
-    play();
-  }
+
+  
 
 }
 
@@ -65,6 +61,7 @@ function splash() {
   
   testBox.display();
   testBox.spin();
+}
 
 function play() {
   // this is what you see when the game is running 
@@ -76,7 +73,11 @@ function play() {
   player1.display();
 
   textAlign(LEFT);
-  text("elasped time: " + gameTimer.elaspedTime, 40, 100); //show elasped time
+  text("Elasped time: " + gameTimer.elaspedTime, 20, 20);
+
+
+
+  
 
 
   if(gameTimer.isFinished()) {
@@ -96,22 +97,19 @@ function play() {
 
     if(presents[i].y > height){
       presents.splice(i, 1);
+      score--; //take away 1 point
     }
     let d = dist(presents[i].y, player1.x, player1.y);
     if(d < 50){
       presents.splice(i, 1);
+      score ++; // add 1 point
     }
-
-
   }
-
-  
+  textAlign(LEFT);
+  text("Elasped time: " + gameTimer.elaspedTime, 20, 20);
+  text("Score: " + score, 20, 40);
 }
 
-  
-
-
-}
 
 function gameOver() {
   // this is what you see when the game ends
@@ -120,19 +118,21 @@ function gameOver() {
   textAlign(CENTER);
   textSize(16);
   text("Game Over!", width / 2, height / 2);
+  text("Your final score: " + score, width/2, height * 2/3);
 }
 
 function mousePressed() {
   if(gameState == "splash") {
-    gameState == "play";
+    gameState = "play";
     gameTimer.start();
     dropTimer.start();
+    score = 0; //reset score
   }
   else if(gameState == "play") {
-    gameState == "gameOver";
+    gameState = "gameOver";
   }
   else if(gameState == "gameOver") {
-    gameState == "splash";
+    gameState = "splash";
   }
   
     
